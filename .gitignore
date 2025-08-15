@@ -1,0 +1,74 @@
+﻿# .NET Core
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.so
+*.dylib
+*.deps.json
+*.runtimeconfig.json
+*.staticwebassets.endpoints.json
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+.vscode/
+*.csproj.Backup.tmp
+*.csproj.user
+
+# Logs
+*.log
+logs/
+
+# Angular
+src/clientApp/todo-app2/node_modules/
+src/clientApp/todo-app2/dist/
+src/clientApp/todo-app2/.angular/
+src/clientApp/todo-app2/.vscode/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Docker
+.dockerignore
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Package files
+*.nupkg
+*.snupkg
+
+# Coverage reports
+coverage/
+*.coverage
+*.coveragexml
+
+# Test results
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+*.tmp
+/src/antigo usar de referencia

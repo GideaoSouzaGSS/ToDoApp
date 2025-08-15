@@ -1,0 +1,52 @@
+<h2>Tarefas</h2>
+
+<div class="component-group" style="margin: 16px;">
+  <button nz-button nzType="primary" (click)="onAddTask()">Adicionar Nova Tarefa</button>
+</div>
+
+<div cdkDropList 
+     [cdkDropListData]="tarefas" 
+     (cdkDropListDropped)="onDrop($event)" 
+     [cdkDropListSortingDisabled]="true">
+  <nz-table #basicTable [nzData]="tarefas" [nzBordered]="true" [nzSize]="'middle'">
+    <thead>
+      <tr>
+        <th nzWidth="50px"><nz-icon nzType="unordered-list" nzTheme="outline" /></th>
+        <th>Título</th>
+        <th>Descrição</th>
+        <th>Data de Criação</th>
+        <th nzWidth="50px">Concluído</th>
+        <th nzWidth="50px">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let tarefa of basicTable.data">
+        <tr cdkDrag 
+            [cdkDragData]="tarefa" 
+            cdkDropList
+            [cdkDropListData]="[tarefa]"
+            (cdkDropListEntered)="onDragEnter($event)"
+            (cdkDropListExited)="onDragExit($event)"
+            [class.drop-target]="tarefa.id === targetTaskId" 
+            [class.drop-target-strong]="tarefa.id === targetTaskId">
+          <td [nzExpand]="expandSet.has(tarefa.id)" (nzExpandChange)="onExpandChange(tarefa.id, $event)"
+              *ngIf="tarefa.subTarefas && tarefa.subTarefas.length > 0">
+          </td>
+          <td *ngIf="!tarefa.subTarefas || tarefa.subTarefas.length === 0"></td>
+          <td>{{ tarefa.titulo }}</td>
+          <td>{{ tarefa.descricao }}</td>
+          <td>{{ tarefa.dataCriacao | date:'dd/MM/yyyy' }}</td>
+          <td nzAlign="center">
+            <nz-icon nzType="check-circle" nzTheme="fill" style="color: green;" *ngIf="tarefa.concluido"></nz-icon>
+            <nz-icon nzType="close-circle" nzTheme="fill" style="color: red;" *ngIf="!tarefa.concluido"></nz-icon>
+          </td>
+          <td>
+            <button nz-button nzType="link" (click)="onEdit(tarefa)">
+              <nz-icon nzType="edit" nzTheme="outline"></nz-icon>
+            </button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</div>
