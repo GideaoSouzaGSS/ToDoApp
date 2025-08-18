@@ -32,11 +32,37 @@ namespace TodoApp.Api.Configuration
             return services;
         }
 
-        private static IServiceCollection AddPostgreSqlContexts(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddPostgreSqlContexts(this IServiceCollection services, IConfiguration configuration)
         {
+            // Obtém o caminho do arquivo de senha do secret
+            var passwordSecretPath = configuration["DB_PASSWORD_PATH"];
 
-            services.AddNpgsql<AppDbContext>(configuration.GetConnectionString("Aplicacao"));
-            services.AddNpgsql<EventStoreDbContext>(configuration.GetConnectionString("Eventos"));
+            if (string.IsNullOrEmpty(passwordSecretPath) || !File.Exists(passwordSecretPath))
+            {
+                throw new InvalidOperationException("O caminho do secret de senha do banco de dados não foi encontrado ou o arquivo não existe.");
+            }
+
+            // Lê a senha do arquivo de secret
+            var dbPassword = File.ReadAllText(passwordSecretPath).Trim();
+
+            // 1. Contexto "Aplicacao"
+            var aplicacaoBase = configuration["DB_CONNECTION_STRING_APLICACAO_BASE"];
+            if (string.IsNullOrEmpty(aplicacaoBase))
+            {
+                throw new InvalidOperationException("A string de conexão base para a aplicação não foi encontrada.");
+            }
+            var aplicacaoConnectionString = $"{aplicacaoBase}Password={dbPassword}";
+            services.AddNpgsql<AppDbContext>(aplicacaoConnectionString);
+
+            // 2. Contexto "Eventos"
+            var eventosBase = configuration["DB_CONNECTION_STRING_EVENTOS_BASE"];
+            if (string.IsNullOrEmpty(eventosBase))
+            {
+                throw new InvalidOperationException("A string de conexão base para eventos não foi encontrada.");
+            }
+            var eventosConnectionString = $"{eventosBase}Password={dbPassword}";
+            services.AddNpgsql<EventStoreDbContext>(eventosConnectionString);
+
             return services;
         }
     }

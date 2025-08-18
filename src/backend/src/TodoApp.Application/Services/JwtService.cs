@@ -15,8 +15,19 @@ namespace TodoApp.Application.Services
 
         public JwtService(IConfiguration configuration)
         {
-            _secretKey = configuration["JWT_SECRET_KEY"] 
-                         ?? throw new ArgumentNullException("JWT_SECRET_KEY não configurada.");
+            var secretPath = configuration["JWT_SECRET_PATH"];
+
+            if (string.IsNullOrEmpty(secretPath))
+            {
+                throw new ArgumentNullException(nameof(secretPath), "A configuração 'JWT_SECRET_PATH' não foi encontrada.");
+            }
+            var secretKey = File.ReadAllText(secretPath).Trim();
+
+            if (string.IsNullOrEmpty(secretKey))
+            {
+                throw new InvalidOperationException("O arquivo de segredo JWT está vazio.");
+            }
+            _secretKey = secretKey;
         }
 
         public string GerarToken(Guid usuarioId, string email, string nomeUsuario)

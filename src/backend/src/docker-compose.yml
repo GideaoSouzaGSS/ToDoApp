@@ -10,22 +10,19 @@ services:
       - minio
       - postgres
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
       - Email__SmtpServer=mailhog
       - Email__SmtpPort=1025
       - Email__EnableSsl=false
       - ConnectionStrings__RabbitMQ=rabbitmq
-      - MassTransit__RabbitMQ__Username=guest
-      - MassTransit__RabbitMQ__Password=guest
-      - ConnectionStrings__AzureBlobStorage=http://minio:9000/devstoreaccount1?accessKey=minioadmin&secretKey=minioadmin
       - AWS__ServiceURL=http://minio:9000
-      - ConnectionStrings__Aplicacao=Host=postgres;Port=5432;Database=todo_db;Username=todo_user;Password=todo_pass
-      - ConnectionStrings__Eventos=Host=postgres;Port=5432;Database=todo_db_event;Username=todo_user;Password=todo_pass
-      - JWT_SECRET_KEY=minha_chave_super_secreta_e_muito_longaaaaaa
     ports:
-      - "5001:80"  
-      - "5002:443" 
-    
+      - "5001:80"
+      - "5002:443"
+    secrets:
+      - masstransit_rabbitmq_password
+      - minio_secret_key
+      - postgres_password 
+      - jwt_secret_key
 
   todoapp.emailworker:
     image: ${DOCKER_REGISTRY-}todoappemailworker
@@ -37,14 +34,13 @@ services:
       - mailhog
       - postgres
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
       - Email__SmtpServer=mailhog
       - Email__SmtpPort=1025
       - Email__EnableSsl=false
       - MassTransit__RabbitMQ__Host=rabbitmq
-      - MassTransit__RabbitMQ__Username=guest
-      - MassTransit__RabbitMQ__Password=guest
-      - ConnectionStrings__PostgreSQL=Host=postgres;Port=5432;Database=todo_db;Username=todo_user;Password=todo_pass
+    secrets:
+      - masstransit_rabbitmq_password
+      - db_todo_user_password
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -52,11 +48,9 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
   mailhog:
     image: mailhog/mailhog
@@ -64,16 +58,18 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
-
+  
   minio:
-    image: minio/minio
+    image: quay.io/minio/minio 
     container_name: minio
     ports:
       - "9000:9000"
       - "9001:9001"
     environment:
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD_FILE: /run/secrets/minio_root_password
+    secrets:
+      - minio_root_password
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
@@ -86,7 +82,9 @@ services:
     environment:
       - POSTGRES_DB=todo_db
       - POSTGRES_USER=todo_user
-      - POSTGRES_PASSWORD=todo_pass
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password 
+    secrets:
+      - postgres_password
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./TodoApp.Data/GeracaoBancoDados:/docker-entrypoint-initdb.d
@@ -95,3 +93,5 @@ volumes:
   rabbitmq_data:
   minio_data:
   postgres_data:
+
+
