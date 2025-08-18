@@ -1,4 +1,5 @@
-﻿using TodoApp.Api.Features.Autenticacao.RegistrarUsuario.DTOs;
+﻿using MediatR;
+using TodoApp.Api.Features.Autenticacao.RegistrarUsuario.DTOs;
 using TodoApp.Application.Interfaces;
 
 namespace TodoApp.Api.Features.Autenticacao.RegistrarUsuario.Endpoint
@@ -7,10 +8,11 @@ namespace TodoApp.Api.Features.Autenticacao.RegistrarUsuario.Endpoint
     {
         public static void MapRegistrarUsuarioEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/registrar-usuario", async (RegistrarUsuarioCommandRequest command, IUsuarioService usuarioService) =>
+            app.MapPost("/autenticacao/registrar-usuario", async (IMediator mediator, RegistrarUsuarioCommandRequest request, IUsuarioService usuarioService) =>
             {
-                var usuarioId = await usuarioService.RegistrarNovoUsuarioAsync(command.NomeUsuario, command.Email, command.Senha);
-                return Results.Ok(usuarioId);
+                var response = await mediator.Send(request);
+                return Results.Ok(response);
+
             })
             .WithName("RegistrarUsuario")
             .WithTags("Autenticação");
