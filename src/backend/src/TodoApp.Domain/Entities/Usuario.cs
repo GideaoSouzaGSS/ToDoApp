@@ -9,14 +9,15 @@ namespace TodoApp.Domain.Entities
     public class Usuario
     {
         public Guid Id { get; set; }
-        public string NomeUsuario { get; set; }
-        public string NomeCompleto { get; set; }
-        public string Email { get; set; }
+        public string? NomeUsuario { get; set; }
+        public string? NomeCompleto { get; set; }
+        public string? Email { get; set; }
         public DateTime? DataNascimento { get; set; }
-        public string Senha { get; set; }
+        public string? Senha { get; set; }
         public bool EmailConfirmado { get; set; }
         public string? CodigoConfirmacaoEmail { get; set; }
         public DateTime? DataGeracaoCodigoEmail { get; set; }
+        public Usuario() { }
 
         public Usuario(string nomeUsuario, string email, string senha)
         {
@@ -29,7 +30,6 @@ namespace TodoApp.Domain.Entities
 
         private static string HashSenha(string senha)
         {
-            // Implementação do hash (ex: BCrypt)
             return BCrypt.Net.BCrypt.HashPassword(senha);
         }
 

@@ -9,5 +9,6 @@ namespace TodoApp.Application.Interfaces
     public interface IUsuarioService
     {
         Task<Guid> RegistrarNovoUsuarioAsync(string nomeUsuario, string email, string senha);
+        Task<string> LogarUsuarioAsync(string email, string senha);
     }
 }

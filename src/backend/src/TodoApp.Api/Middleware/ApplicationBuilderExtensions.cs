@@ -1,4 +1,5 @@
-﻿using TodoApp.Api.Features.Autenticacao.RegistrarUsuario.Endpoint;
+﻿using TodoApp.Api.Features.Autenticacao.LogarUsuario.Endpoint;
+using TodoApp.Api.Features.Autenticacao.RegistrarUsuario.Endpoint;
 
 namespace TodoApp.Api.Middleware
 {
@@ -17,6 +18,7 @@ namespace TodoApp.Api.Middleware
             app.UseHttpsRedirection();
 
             app.MapRegistrarUsuarioEndpoint();
+            app.MapLogarUsuarioEndpoint();
         }
     }
 }

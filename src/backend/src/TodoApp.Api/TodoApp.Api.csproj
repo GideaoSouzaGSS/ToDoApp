@@ -33,10 +33,4 @@
     <ProjectReference Include="..\TodoApp.Data\TodoApp.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Autenticacao\RegistrarUsuario\Commands\" />
-    <Folder Include="Features\Autenticacao\RegistrarUsuario\QueryHandlers\" />
-    <Folder Include="Features\Autenticacao\RegistrarUsuario\Querys\" />
-  </ItemGroup>
-
 </Project>

@@ -20,6 +20,7 @@ namespace TodoApp.Data.Repositories
         public async Task RegistrarNovoUsuarioAsync(Usuario usuario)
         {
             await context.Usuarios.AddAsync(usuario);
+            await context.SaveChangesAsync();
         }
 
         public async Task<bool> ExisteUsuarioComEmailAsync(string email)
@@ -33,9 +34,10 @@ namespace TodoApp.Data.Repositories
             return context.Usuarios.AnyAsync(u => u.NomeUsuario == username);
         }
 
-        public Task<Usuario?> ObterUsuarioPorEmailAsync(string email)
+        public async Task<Usuario?> ObterUsuarioPorEmailAsync(string email)
         {
-            return context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+            return user;
         }
     }
 }

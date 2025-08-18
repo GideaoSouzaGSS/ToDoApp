@@ -27,6 +27,8 @@ namespace TodoApp.Api.Configuration
                     .AsImplementedInterfaces()
                     .WithScopedLifetime());
 
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
             return services;
         }
 

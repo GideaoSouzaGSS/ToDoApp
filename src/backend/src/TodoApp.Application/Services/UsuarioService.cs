@@ -9,9 +9,20 @@ using TodoApp.Domain.Repositories;
 
 namespace TodoApp.Application.Services;
 
-public class UsuarioService(IUsuarioRepository usuarioRepository) : IUsuarioService
+public class UsuarioService(IUsuarioRepository usuarioRepository, IJwtService _jwtService) : IUsuarioService
 {
     private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
+    private readonly IJwtService _jwtService = _jwtService;
+
+    public async Task<string> LogarUsuarioAsync(string email, string senha)
+    {
+        var usuario = await _usuarioRepository.ObterUsuarioPorEmailAsync(email);
+        if (usuario == null || !usuario.VerificarSenha(senha))
+        {
+            throw new InvalidOperationException("Email ou senha inválidos.");
+        }
+        return _jwtService.GerarToken(usuario.Id, usuario.Email, usuario.NomeUsuario);
+    }
 
     public async Task<Guid> RegistrarNovoUsuarioAsync(string nomeUsuario, string email, string senha)
     {
