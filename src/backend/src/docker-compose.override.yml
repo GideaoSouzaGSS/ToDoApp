@@ -4,14 +4,21 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=80
       - ASPNETCORE_HTTPS_PORTS=443
-    ports:
-      - "5001:80"
-      - "5002:443"
+      - JWT_SECRET_PATH=/run/secrets/jwt_secret_key
+      - DB_CONNECTION_STRING_APLICACAO_BASE=Host=postgres;Port=5432;Database=todo_db;Username=todo_user;
+      - DB_CONNECTION_STRING_EVENTOS_BASE=Host=postgres;Port=5432;Database=todo_db_event;Username=todo_user;
+      - DB_PASSWORD_PATH=/run/secrets/postgres_password
+
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    secrets:
+      - masstransit_rabbitmq_password
+      - minio_secret_key
+      - jwt_secret_key
+      - postgres_password 
 
   todoapp.emailworker:
     environment:
@@ -19,3 +26,36 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+    secrets:
+      - masstransit_rabbitmq_password
+      - db_todo_user_password
+
+  rabbitmq:
+    secrets:
+      - rabbitmq_default_password
+  
+  minio:
+    secrets:
+      - minio_root_password
+      
+  postgres:
+    secrets:
+      - postgres_password
+
+secrets:
+  masstransit_rabbitmq_password:
+    file: ./secrets/rabbitmq_password.txt
+  minio_secret_key:
+    file: ./secrets/minio_admin_secret_key.txt
+  minio_root_password:
+    file: ./secrets/minio_root_password.txt
+  db_todo_user_password:
+    file: ./secrets/postgres_password.txt
+  db_todo_db_event_password:
+    file: ./secrets/postgres_password.txt
+  jwt_secret_key:
+    file: ./secrets/jwt_secret_key.txt
+  rabbitmq_default_password:
+    file: ./secrets/rabbitmq_default_password.txt
+  postgres_password:
+    file: ./secrets/postgres_password.txt
