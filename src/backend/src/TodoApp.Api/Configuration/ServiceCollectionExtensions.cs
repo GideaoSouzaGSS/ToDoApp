@@ -8,12 +8,16 @@ namespace TodoApp.Api.Configuration
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
         {
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-            
-            services.AddPostgreSqlContexts(configuration);
+
+            // Verifica se o ambiente é de teste
+            if (!environment.IsEnvironment("Test"))
+            {
+                services.AddPostgreSqlContexts(configuration);
+            }
 
             var applicationAssembly = typeof(ApplicationAssemblyMarker).Assembly;
             var dataAssembly = typeof(DataAssemblyMarker).Assembly;

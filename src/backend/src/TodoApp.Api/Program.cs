@@ -13,10 +13,11 @@ builder.Configuration.AddDockerSecrets(
 
 builder.Configuration.AddEnvironmentVariables();
 
-builder.Services.AddAppServices(builder.Configuration);
+builder.Services.AddAppServices(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 
 app.ConfigureApp();
 
 app.Run();
+public partial class Program { }
