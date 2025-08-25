@@ -1,0 +1,59 @@
+/* src/app/pages/welcome/welcome.scss */
+.welcome-page {
+  padding: 24px;
+}
+
+nz-card {
+  height: 100%;
+}
+
+.list-icon {
+  margin-right: 8px;
+  color: #1890ff;
+}
+
+/* src/app/pages/welcome/welcome.scss */
+.welcome-page {
+  padding: 24px;
+}
+
+.stats-row {
+  margin-bottom: 24px;
+}
+
+/* === CÓDIGO DE CORREÇÃO ABAIXO === */
+
+// Força os cards a ocuparem 100% da altura da coluna em que estão.
+// E os transforma em containers flex para alinhar o conteúdo interno.
+nz-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+// Força o corpo do card (a área de conteúdo) a crescer e ocupar
+// o espaço vertical disponível.
+// Usamos ::ng-deep para estilizar um elemento interno do NG-ZORRO.
+::ng-deep .ant-card-body {
+  flex: 1;
+}
+
+// Melhora o alinhamento dos ícones com o texto, especialmente se o texto quebrar em várias linhas.
+.list-icon {
+  margin-right: 10px;
+  margin-top: 5px; // Alinha o ícone com a primeira linha do texto
+  font-size: 16px;
+  color: #1890ff;
+}
+
+// Garante que o texto dentro do item da lista se alinhe corretamente ao lado do ícone.
+li[nz-list-item] {
+  align-items: flex-start;
+}
+.ant-result{
+    padding: 10px 24px;
+}
+
+.nao-quebrar-linha{
+    white-space: nowrap;
+}

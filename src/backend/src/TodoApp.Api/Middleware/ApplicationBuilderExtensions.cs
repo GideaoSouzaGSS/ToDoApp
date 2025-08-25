@@ -16,6 +16,7 @@ namespace TodoApp.Api.Middleware
                 return Task.CompletedTask;
             });
             app.UseHttpsRedirection();
+            app.UseCors();
 
             app.MapRegistrarUsuarioEndpoint();
             app.MapLogarUsuarioEndpoint();

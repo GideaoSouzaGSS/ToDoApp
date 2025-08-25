@@ -1,0 +1,40 @@
+<nz-card class="login-card" [nzBordered]="false">
+  <div class="card-header">
+    <h2>Login</h2>
+    <p>Bem-vindo de volta!</p>
+  </div>
+  
+  <form nz-form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Por favor, insira um email válido!">
+        <nz-input-group nzPrefixIcon="user">
+          <input type="email" nz-input formControlName="email" placeholder="Email" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Por favor, insira sua senha!">
+        <nz-input-group nzPrefixIcon="lock">
+          <input type="password" nz-input formControlName="senha" placeholder="Senha" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-alert
+      *ngIf="errorMessage"
+      nzType="error"
+      [nzMessage]="errorMessage"
+      nzShowIcon
+      class="error-alert"
+    ></nz-alert>
+    
+    <button nz-button nzType="primary" nzBlock [disabled]="loginForm.invalid" [nzLoading]="isLoading">
+      Entrar
+    </button>
+  </form>
+  
+  <div class="register-link">
+    Não tem uma conta? <a routerLink="/register">Registre-se agora!</a>
+  </div>
+</nz-card>

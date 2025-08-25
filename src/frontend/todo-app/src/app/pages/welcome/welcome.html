@@ -1,0 +1,61 @@
+<div class="welcome-page">
+  <nz-result
+    nzIcon="smile-two-tone"
+    nzTitle="Bem-vindo ao Projeto de Estudo To-Do App!"
+    nzSubTitle="Este projeto foi criado com o objetivo de aprofundar conhecimentos em Angular, focando em boas práticas, arquitetura e design."
+  >
+    <div nz-result-extra>
+      <button nz-button nzType="primary" routerLink="/todo-all">
+        <span nz-icon nzType="arrow-right"></span>
+        Ver Minhas Tarefas
+      </button>
+    </div>
+  </nz-result>
+
+  <div nz-row [nzGutter]="[24, 24]" class="stats-row">
+    <div nz-col [nzXs]="24" [nzSm]="12">
+      <nz-card>
+        <nz-statistic
+          [nzValue]="0"
+          nzTitle="Tarefas Pendentes"
+          [nzPrefix]="iconPendente"
+        ></nz-statistic>
+        <ng-template #iconPendente><span nz-icon nzType="edit"></span></ng-template>
+      </nz-card>
+    </div>
+    <div nz-col [nzXs]="24" [nzSm]="12">
+      <nz-card>
+        <nz-statistic
+          [nzValue]="0"
+          nzTitle="Tarefas Concluídas"
+          [nzPrefix]="iconConcluida"
+        ></nz-statistic>
+        <ng-template #iconConcluida><span nz-icon nzType="check-square" nzTheme="twotone" nzTwotoneColor="#52c41a"></span></ng-template>
+      </nz-card>
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="[24, 24]">
+    <div nz-col [nzXs]="24" [nzMd]="12">
+      <nz-card nzTitle="🎯 Objetivos Principais" [nzBordered]="true">
+        <ul nz-list>
+          <li nz-list-item>
+            <span nz-icon nzType="check-circle" class="list-icon"></span>
+            <strong class="nao-quebrar-linha">Boas Práticas:</strong>  Aplicar conceitos como componentes `standalone`, `lazy loading`, guards e uma estrutura de pastas organizada.
+          </li>
+          <li nz-list-item>
+            <span nz-icon nzType="skin" class="list-icon"></span>
+            <strong class="nao-quebrar-linha">Design e UI:</strong>  Utilizar a biblioteca de componentes NG-ZORRO para criar uma interface limpa, moderna e responsiva.
+          </li>
+        </ul>
+      </nz-card>
+    </div>
+    <div nz-col [nzXs]="24" [nzMd]="12">
+      <nz-card nzTitle="📋 Sobre o To-Do" [nzBordered]="true">
+        <p>
+          O sistema de tarefas (To-Do) servirá como base para a aplicação desses conceitos. Ele será construído com componentes visuais claros e bem definidos, permitindo que a manutenção e a adição de novas funcionalidades sejam feitas de forma simples e eficiente.
+        </p>
+      </nz-card>
+    </div>
+  </div>
+</div>

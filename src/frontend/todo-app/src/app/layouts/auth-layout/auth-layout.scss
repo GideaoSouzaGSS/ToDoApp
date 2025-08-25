@@ -1,0 +1,8 @@
+/* src/app/layouts/auth-layout/auth-layout.component.scss */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa a altura inteira da tela */
+  background-color: #f0f2f5; /* Um cinza claro, típico de fundos de login */
+}

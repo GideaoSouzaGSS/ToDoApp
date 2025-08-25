@@ -13,6 +13,16 @@ builder.Configuration.AddDockerSecrets(
 
 builder.Configuration.AddEnvironmentVariables();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddAppServices(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
